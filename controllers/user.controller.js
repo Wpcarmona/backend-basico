@@ -7,13 +7,6 @@ const usuariosGet = async(req = request, res= response) => {
 
     const {limit, desde} = req.query;
     const query = {state: true}
-    if(isNaN(limit) | isNaN(desde) ){
-        return res.status(400).json({
-            error:'ERROR',
-            code: 400,
-            msg: 'uno o mas de valores ingresados no es un numero'
-        })
-    }
     const resp = await Promise.all([
         Usuario.countDocuments(query),
         Usuario.find(query)
