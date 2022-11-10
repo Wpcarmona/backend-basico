@@ -1,42 +1,101 @@
-const {response, request} = require('express')
+const {response, request} = require('express');
+const bcryptjs = require('bcryptjs');
+const Usuario = require('../models/usuario');
 
-const usuariosGet = (req = request, res= response) => {
 
-    const {q, nombre = 'no name', apikey,page = 0, limit} = req.query;
+const usuariosGet = async(req = request, res= response) => {
+
+    const {limit, desde} = req.query;
+    const query = {state: true}
+    if(isNaN(limit) | isNaN(desde) ){
+        return res.status(400).json({
+            error:'ERROR',
+            code: 400,
+            msg: 'uno o mas de valores ingresados no es un numero'
+        })
+    }
+    const resp = await Promise.all([
+        Usuario.countDocuments(query),
+        Usuario.find(query)
+            .limit(Number(limit))
+            .skip(Number(desde))
+    ]);
     res.json({
-        msg: 'get API - controlador',
-        q,
-        nombre,
-        apikey,
-        page,
-        limit
+        error:'NO ERROR',
+        code: 200,
+        resp
     })
 }
 
-const usuariosPut = (req, res = response) => {
+const usuariosPut = async(req, res = response) => {
 
-    const  id = req.params.id;
-    res.status(400).json({
-        msg: 'put API - controlador',
-        id
-    })
-}
+    const { id } = req.params;
+    const {_id, password, google, email, ...resto} = req.body;
 
-const usuariosPost = (req, res = response) => {
+    // TODO validar contra base de datos
 
-    const {nombre, edad} = req.body;
+    if(password){
+         //Encriptar la contra
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync(password, salt);
+    }
 
-    res.status(200).json({
-        msg: 'post API - controlador',
-        nombre,
-        edad
-    })
-}
+    const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
-const usuariosDelete = (req, res = response) => {
     res.json({
-        msg: 'delete API - controlador'
+        error:'NO ERROR',
+        code: 200,
+        usuario
     })
+}
+
+const usuariosPost = async (req, res = response) => {
+
+    const {name, email, password, role} = req.body;
+    const usuario = new Usuario({name, email, password, role});
+
+    //Encriptar la contra
+    const salt = bcryptjs.genSaltSync();
+    usuario.password = bcryptjs.hashSync(password, salt);
+
+    //guardar en BD
+    await usuario.save();
+
+    res.json({
+        error:'NO ERROR',
+        code: 200,
+        usuario
+    }); 
+}
+
+const usuariosDelete = async(req, res = response) => {
+    const { id } = req.params
+
+    // Fisicamente lo borramos
+    //const usuario = await Usuario.findByIdAndDelete(id);
+
+    //probar 
+  /*  try {
+        const usuario = await Usuario.findByIdAndUpdate(id, {state: false});
+        res.json({
+            error: 'NO ERROR',
+            code: 200,
+            usuario
+        })
+    } catch (error) {
+        res.json({
+            error: 'Error no se pudo eliminar el usuario',
+            code: 400
+        })
+    } */
+
+    const usuario = await Usuario.findByIdAndUpdate(id, {state: false});
+        res.json({
+            error: 'NO ERROR',
+            code: 200,
+            usuario
+        })
+  
 }
 
 const usuariosPatch = (req, res) => {
