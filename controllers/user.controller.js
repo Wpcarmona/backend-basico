@@ -75,7 +75,7 @@ const usuariosDelete = async(req, res = response) => {
     //const usuario = await Usuario.findByIdAndDelete(id);
 
     //probar 
-  /*  try {
+    try {
         const usuario = await Usuario.findByIdAndUpdate(id, {state: false});
         res.json({
             error: 'NO ERROR',
@@ -87,14 +87,7 @@ const usuariosDelete = async(req, res = response) => {
             error: 'Error no se pudo eliminar el usuario',
             code: 400
         })
-    } */
-
-    const usuario = await Usuario.findByIdAndUpdate(id, {state: false});
-        res.json({
-            error: 'NO ERROR',
-            code: 200,
-            usuario
-        })
+    } 
   
 }
 
