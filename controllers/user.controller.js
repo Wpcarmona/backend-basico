@@ -25,7 +25,7 @@ const usuariosGet = async(req = request, res= response) => {
 const usuariosPut = async(req, res = response) => {
 
     const { id } = req.params;
-    const {_id, password, google, email, ...resto} = req.body;
+    const {_id, password, google, email, state, ...resto} = req.body;
 
     // TODO validar contra base de datos
 
@@ -79,7 +79,7 @@ const usuariosDelete = async(req, res = response) => {
     try {
         const usuario = await Usuario.findByIdAndUpdate(id, {state: false});
         //const usuarioAutenticado = req.usuario;
-        res.json({
+        res.status(200).json({
             header: [{
                 error:'NO ERROR',
                 code: 200,
@@ -90,10 +90,10 @@ const usuariosDelete = async(req, res = response) => {
             }]
         })
     } catch (error) {
-        res.json({
+        res.status(500).json({
             header: [{
                 error: 'Error no se pudo eliminar el usuario',
-                code: 400
+                code: 500
             }],
             body:[{}]
             
