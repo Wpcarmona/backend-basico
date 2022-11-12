@@ -9,14 +9,16 @@ const usuariosGet = async(req = request, res= response) => {
     const query = {state: true}
     const resp = await Promise.all([
         Usuario.countDocuments(query),
-        Usuario.find(query)
-            .limit(Number(limit))
-            .skip(Number(desde))
+        Usuario.find(query).limit(Number(limit)).skip(Number(desde))
     ]);
     res.json({
-        error:'NO ERROR',
-        code: 200,
-        resp
+        header: [{
+            error:'NO ERROR',
+            code: 200,
+        }],
+        body:[{
+            resp
+        }]
     })
 }
 
@@ -36,9 +38,14 @@ const usuariosPut = async(req, res = response) => {
     const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
     res.json({
-        error:'NO ERROR',
-        code: 200,
-        usuario
+        header: [{
+            error:'NO ERROR',
+            code: 200,
+        }],
+        body:[{
+            msg: 'Usuario actualizado correctamente',
+            usuario
+        }]
     })
 }
 
@@ -55,30 +62,41 @@ const usuariosPost = async (req, res = response) => {
     await usuario.save();
 
     res.json({
-        error:'NO ERROR',
-        code: 200,
-        usuario
+        header: [{
+            error:'NO ERROR',
+            code: 200,
+        }],
+        body:[{
+            msg: 'El usuario fue creado correctamente',
+            usuario
+        }]
     }); 
 }
 
 const usuariosDelete = async(req, res = response) => {
     const { id } = req.params
 
-    // Fisicamente lo borramos
-    //const usuario = await Usuario.findByIdAndDelete(id);
-
-    //probar 
     try {
         const usuario = await Usuario.findByIdAndUpdate(id, {state: false});
+        //const usuarioAutenticado = req.usuario;
         res.json({
-            error: 'NO ERROR',
-            code: 200,
-            usuario
+            header: [{
+                error:'NO ERROR',
+                code: 200,
+            }],
+            body:[{
+                msg:'El usuario fue borrado satisfactoriamente',
+                usuario
+            }]
         })
     } catch (error) {
         res.json({
-            error: 'Error no se pudo eliminar el usuario',
-            code: 400
+            header: [{
+                error: 'Error no se pudo eliminar el usuario',
+                code: 400
+            }],
+            body:[{}]
+            
         })
     } 
   
