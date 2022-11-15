@@ -6,7 +6,7 @@ const validateJWT = async(req, res = response, next) => {
 
     const token = req.header('authorization');
     if(!token){
-       return  res.status(401).json({
+       return  res.status(200).json({
             header: [{
                 error:'NO HAY TOKEN EN LA PETICION',
                 code: 401,
@@ -22,7 +22,7 @@ const validateJWT = async(req, res = response, next) => {
 
 
         if(!usuario){
-            return  res.status(401).json({
+            return  res.status(200).json({
                 header: [{
                     error:'USUARIO NO EXISTE EN BD',
                     code: 401,
@@ -34,7 +34,7 @@ const validateJWT = async(req, res = response, next) => {
         //Verificar si el uid tien estado en true
 
         if(!usuario.state){
-            return res.status(401).json({
+            return res.status(200).json({
                 header: [{
                     error:'TOKEN NO VALIDO',
                     code: 401,
@@ -48,7 +48,7 @@ const validateJWT = async(req, res = response, next) => {
         next();
     } catch (error) {
         console.log(error)
-        res.status(401).json({
+        res.status(200).json({
             header: [{
                 error:'TOKEN NO VALIDO',
                 code: 401,
