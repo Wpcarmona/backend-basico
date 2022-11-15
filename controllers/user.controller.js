@@ -11,7 +11,7 @@ const usuariosGet = async(req = request, res= response) => {
         Usuario.countDocuments(query),
         Usuario.find(query).limit(Number(limit)).skip(Number(desde))
     ]);
-    res.json({
+    res.status(200).json({
         header: [{
             error:'NO ERROR',
             code: 200,
@@ -37,7 +37,7 @@ const usuariosPut = async(req, res = response) => {
 
     const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
-    res.json({
+    res.status(200).json({
         header: [{
             error:'NO ERROR',
             code: 200,
