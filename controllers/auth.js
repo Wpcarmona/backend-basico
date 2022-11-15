@@ -13,7 +13,7 @@ const login = async(req, res = response) => {
         // Verificar si el email existe
         const usuario = await Usuario.findOne({email});
         if(!usuario){
-            return res.status(400).json({
+            return res.status(200).json({
                 header: [{
                     code: 400,
                     error: 'El correo no se encuentra registrado'
@@ -24,7 +24,7 @@ const login = async(req, res = response) => {
 
         // Si el usuario esta activo
         if(!usuario.state){
-            return res.status(400).json({
+            return res.status(200).json({
                 header: [{
                     code: 400,
                     error: 'Cuenta Eliminada'
@@ -37,7 +37,7 @@ const login = async(req, res = response) => {
 
         const validatePassword = bcryptjs.compareSync(password, usuario.password);
         if(!validatePassword){
-            return res.status(400).json({
+            return res.status(200).json({
                 header: [{
                     code: 400,
                     error: 'Password incorrecto'
