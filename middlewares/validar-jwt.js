@@ -8,7 +8,7 @@ const validateJWT = async(req, res = response, next) => {
     if(!token){
        return  res.status(200).json({
             header: [{
-                error:'NO HAY TOKEN EN LA PETICION',
+                error:'No existe una autorizacion valida',
                 code: 401,
             }],
             body:[{}]
@@ -24,7 +24,7 @@ const validateJWT = async(req, res = response, next) => {
         if(!usuario){
             return  res.status(200).json({
                 header: [{
-                    error:'USUARIO NO EXISTE EN BD',
+                    error:'El usuario no existe',
                     code: 401,
                 }],
                 body:[{}]
@@ -36,7 +36,7 @@ const validateJWT = async(req, res = response, next) => {
         if(!usuario.state){
             return res.status(200).json({
                 header: [{
-                    error:'TOKEN NO VALIDO',
+                    error:'Autorizacion no valida',
                     code: 401,
                 }],
                 body:[{}]
@@ -50,7 +50,7 @@ const validateJWT = async(req, res = response, next) => {
         console.log(error)
         res.status(200).json({
             header: [{
-                error:'TOKEN NO VALIDO',
+                error:'Autorizacion no valida',
                 code: 401,
             }],
             body:[{}]

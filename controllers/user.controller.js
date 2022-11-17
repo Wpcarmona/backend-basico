@@ -7,7 +7,7 @@ const usuariosGet = async(req = request, res= response) => {
 
     const {limit, desde} = req.query;
     const query = {state: true}
-    const resp = await Promise.all([
+    const [total, users] = await Promise.all([
         Usuario.countDocuments(query),
         Usuario.find(query).limit(Number(limit)).skip(Number(desde))
     ]);
@@ -17,7 +17,8 @@ const usuariosGet = async(req = request, res= response) => {
             code: 200,
         }],
         body:[{
-            resp
+            total,
+            users
         }]
     })
 }
@@ -35,7 +36,7 @@ const usuariosPut = async(req, res = response) => {
         resto.password = bcryptjs.hashSync(password, salt);
     }
 
-    const usuario = await Usuario.findByIdAndUpdate(id, resto);
+    const usuario = await Usuario.findByIdAndUpdate(id, resto, {new: true});
 
     res.status(200).json({
         header: [{
@@ -51,8 +52,17 @@ const usuariosPut = async(req, res = response) => {
 
 const usuariosPost = async (req, res = response) => {
 
-    const {name, email, password, role} = req.body;
-    const usuario = new Usuario({name, email, password, role});
+    const {name, email, password, role, phone, directory} = req.body;
+    var firstName = name.split(' ')[0];
+    var emailtoUpper = email.toUpperCase();
+    const usuario = new Usuario({
+        name, 
+        email:emailtoUpper, 
+        password, 
+        role, 
+        phone, 
+        directory, 
+        firstName});
 
     //Encriptar la contra
     const salt = bcryptjs.genSaltSync();
@@ -77,7 +87,7 @@ const usuariosDelete = async(req, res = response) => {
     const { id } = req.params
 
     try {
-        const usuario = await Usuario.findByIdAndUpdate(id, {state: false});
+        const usuario = await Usuario.findByIdAndUpdate(id, {state: false}, {new: true});
         //const usuarioAutenticado = req.usuario;
         res.status(200).json({
             header: [{

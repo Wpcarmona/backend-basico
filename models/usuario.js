@@ -9,6 +9,10 @@ const usuarioSchema = Schema({
         type: String,
         required: [true, 'El nombre es obligatorio']
     },
+    phone: {
+        type:Number,
+        required: [true, 'El numero de telefono es obligatorio']
+    },
     email: {
         type: String,
         required: [true, 'El correo es obligatorio'],
@@ -34,6 +38,14 @@ const usuarioSchema = Schema({
     google: {
         type: Boolean,
         default: false
+    },
+    directory: {
+        type: Boolean,
+        default: false
+    },
+    firstName: {
+        type: String,
+        default: ''
     }
 });
 

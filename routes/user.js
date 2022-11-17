@@ -11,12 +11,12 @@ const { esRolevalido, emailExiste, existeUsuarioPorId } = require('../helpers/db
 
 const {validateCampos} = require('../middlewares/validar-campos');
 const { validateJWT } = require('../middlewares/validar-jwt');
-const { esAdminRole, tieneRole } = require('../middlewares/validar-roles');
+const { tieneRole } = require('../middlewares/validar-roles');
 
 
 const router = Router();
 
-router.get('/', usuariosGet);
+router.get('/', validateJWT,usuariosGet);
 
 router.put('/:id', [
     validateJWT,
@@ -29,9 +29,10 @@ router.put('/:id', [
 router.post('/', [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
     check('password', 'El password es obligatorio y mas de 6 letras').isLength({min: 6}),
+    check('phone', 'el numero de telefono debe de contener 10 caracteres').isLength({min:10}),
     check('email').custom(emailExiste),
     check('role').custom(esRolevalido),
-    //check('role', 'No es un rol valido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
+    check('directory'),
     validateCampos
 ] ,usuariosPost); //si se tienen mas de 3, significa que el del medio es un middlewares
 
