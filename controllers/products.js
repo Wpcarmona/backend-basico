@@ -54,13 +54,24 @@ const obtenerTodosProductsByID = async(req, res= response) =>{
 
     }).populate('user','name')
 
-
-    res.json({
-        msg:'hola',
-        term,
-        findProductsByID
-    })
-
+    if(findProductsByID ==''){
+        return res.status(200).json({
+            header: [{
+                error:'No hay productos registrados',
+                code: 200,
+            }],
+            body:[{}]
+        }) 
+    }
+    return res.status(200).json({
+        header: [{
+            error:'NO ERROR',
+            code: 200,
+        }],
+        body:[{
+            findProductsByID
+        }]
+    }) 
 }
 
 

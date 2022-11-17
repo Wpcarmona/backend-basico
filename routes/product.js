@@ -31,7 +31,6 @@ router.get('/:id', [
 router.get('/products/:term', [
     validateJWT,
     check('term', 'No es un ID valido').isMongoId(),
-   // check('id').custom(existeCategoryById),
     validateCampos
 ], obtenerTodosProductsByID)
 // crear categoria, cualquier persona con un token valido

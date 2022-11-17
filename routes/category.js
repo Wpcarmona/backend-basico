@@ -27,7 +27,6 @@ router.get('/:id', [
 router.get('/categories/:term', [
     validateJWT,
     check('term', 'No es un ID valido').isMongoId(),
-   // check('id').custom(existeCategoryById),
     validateCampos
 ], obtenerTodasCategoriesByID)
 

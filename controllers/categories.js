@@ -64,11 +64,24 @@ const obtenerTodasCategoriesByID= async(req, res= response) => {
 
     }).populate('user','name')
 
+    if(findCategoriesByID ==''){
+        return res.status(200).json({
+            header: [{
+                error:'No tiene categorias registradas',
+                code: 200,
+            }],
+            body:[{}]
+        }) 
+    }
 
-    res.json({
-        msg:'hola',
-        term,
-        findCategoriesByID
+    return res.status(200).json({
+        header: [{
+            error:'NO ERROR',
+            code: 200,
+        }],
+        body:[{
+            findCategoriesByID
+        }]
     })
     
 }
