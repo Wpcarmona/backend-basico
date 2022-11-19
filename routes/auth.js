@@ -19,4 +19,4 @@ router.post('/google',[
 
 
 
-module.exports = router
+module.exports = router;

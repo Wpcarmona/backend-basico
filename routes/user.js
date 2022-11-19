@@ -7,9 +7,10 @@ const {
     usuariosDelete, 
     usuariosPatch 
 } = require('../controllers/user.controller');
-const { esRolevalido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators');
+const { esRolevalido, emailExiste, existeUsuarioPorId, phoneNumberiquals } = require('../helpers/db-validators');
 
 const {validateCampos} = require('../middlewares/validar-campos');
+const { validatePhone } = require('../middlewares/validar-data');
 const { validateJWT } = require('../middlewares/validar-jwt');
 const { tieneRole } = require('../middlewares/validar-roles');
 
@@ -32,6 +33,8 @@ router.post('/', [
     check('phone', 'el numero de telefono debe de contener 10 caracteres').isLength({min:10}),
     check('email').custom(emailExiste),
     check('role').custom(esRolevalido),
+    //validatePhone,
+    check('phone').custom(phoneNumberiquals),
     check('directory'),
     validateCampos
 ] ,usuariosPost); //si se tienen mas de 3, significa que el del medio es un middlewares

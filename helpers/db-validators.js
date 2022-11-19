@@ -29,6 +29,16 @@ const existeUsuarioPorId = async(id) => {
     } 
 }
 
+const phoneNumberiquals = async(phone) => {
+
+    const phoneExiste = await Usuario.findOne({ phone});
+
+    if(phoneExiste){
+        throw new Error(`el numero: ${phone}, ya esta registrado.`);
+    }
+
+}
+
 const existeProductById = async(id) => {
     //verificar si el correo existe
 
@@ -47,12 +57,28 @@ const existeCategoryById = async(id) => {
     } 
 }
 
+// validar colecciones permitidas
+
+const colectionsAccess = (colection = '', colections = []) => {
+    
+
+    const incluida = colections.includes(colection);
+
+    if(!incluida){
+        throw new Error(`la coleccion ${colection} no es permitida, ${colections}`)
+    }
+
+    return true
+}
+
 module.exports = {
     esRolevalido,
     emailExiste,
     existeUsuarioPorId,
     existeProductById,
-    existeCategoryById
+    existeCategoryById,
+    colectionsAccess,
+    phoneNumberiquals
     
 }
 

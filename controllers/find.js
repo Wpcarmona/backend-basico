@@ -136,8 +136,12 @@ const find = (req, res=response) =>{
             findProducts(term, res)
         break;
         default: 
-        res.json({
-            msg:'error'
+        res.status(500).json({
+            header: [{
+                error:`INTERNAL SERVER ERROR`,
+                code: 500,
+            }],
+            body:[{}]
         })
     }
 

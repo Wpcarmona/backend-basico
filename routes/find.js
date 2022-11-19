@@ -1,6 +1,5 @@
 const {Router} = require('express');
 const { find } = require('../controllers/find');
-const { validateCampos } = require('../middlewares/validar-campos');
 const { validateJWT } = require('../middlewares/validar-jwt');
 
 
@@ -14,4 +13,4 @@ router.get('/:colection/:term',[
 
 
 
-module.exports = router
+module.exports = router;
