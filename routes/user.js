@@ -32,7 +32,7 @@ router.post('/', [
     check('password', 'El password es obligatorio y mas de 6 letras').isLength({min: 6}),
     check('phone', 'el numero de telefono debe de contener 10 caracteres').isLength({min:10}),
     check('email').custom(emailExiste),
-    check('role').custom(esRolevalido),
+    //check('role').custom(esRolevalido),
     //validatePhone,
     check('phone').custom(phoneNumberiquals),
     check('directory'),

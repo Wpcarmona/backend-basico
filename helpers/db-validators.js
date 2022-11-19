@@ -13,9 +13,9 @@ const esRolevalido = async(role = '') => {
 const emailExiste = async(email = '') => {
          //verificar si el correo existe
 
-    const existeEmail = await Usuario.findOne({ email});
+    const existeEmail = await Usuario.findOne({ email:email.toUpperCase()});
     if (existeEmail){
-        throw new Error(`el ${email} ya existe en la base de datos`)
+        throw new Error(`el email ya existe en la base de datos`)
     } 
     
 }
