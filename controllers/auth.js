@@ -12,7 +12,7 @@ const login = async(req, res = response) => {
     try {
 
         // Verificar si el email existe
-        const usuario = await Usuario.findOne({email});
+        const usuario = await Usuario.findOne({email: email.toUpperCase()});
         if(!usuario){
             return res.status(200).json({
                 header: [{
