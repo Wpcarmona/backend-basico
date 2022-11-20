@@ -104,7 +104,7 @@ const usuariosPost = async (req, res = response) => {
         });
     }
 
-    if(phone<10){
+    if(phone.length<10){
         return res.status(200).json({
             header: [{
                 code: 400,

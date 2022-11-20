@@ -10,7 +10,7 @@ const usuarioSchema = Schema({
         required: [true, 'El nombre es obligatorio']
     },
     phone: {
-        type:Number,
+        type:String,
         required: [true, 'El numero de telefono es obligatorio']
     },
     email: {
