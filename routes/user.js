@@ -10,7 +10,6 @@ const {
 const { esRolevalido, emailExiste, existeUsuarioPorId, phoneNumberiquals } = require('../helpers/db-validators');
 
 const {validateCampos} = require('../middlewares/validar-campos');
-const { validatePhone } = require('../middlewares/validar-data');
 const { validateJWT } = require('../middlewares/validar-jwt');
 const { tieneRole } = require('../middlewares/validar-roles');
 
