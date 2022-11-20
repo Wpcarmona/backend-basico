@@ -1,6 +1,7 @@
 const {response, request} = require('express');
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/usuario');
+const { generarJWT } = require('../helpers');
 
 
 const usuariosGet = async(req = request, res= response) => {
@@ -137,8 +138,6 @@ const usuariosPost = async (req, res = response) => {
         });
     }
 
-    
-
     var firstName = name.split(' ')[0];
     const usuario = new Usuario({
         name, 
@@ -151,6 +150,7 @@ const usuariosPost = async (req, res = response) => {
 
     //Encriptar la contra
     const salt = bcryptjs.genSaltSync();
+    const token = await generarJWT(usuario.id);
     usuario.password = bcryptjs.hashSync(password, salt);
 
     //guardar en BD
@@ -163,6 +163,7 @@ const usuariosPost = async (req, res = response) => {
         }],
         body:[{
             msg: 'El usuario fue creado correctamente',
+            token: token,
             usuario
         }]
     }); 
