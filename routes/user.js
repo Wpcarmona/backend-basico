@@ -27,13 +27,16 @@ router.put('/:id', [
 ],usuariosPut);
 
 router.post('/', [
-    check('name', 'El nombre es obligatorio').not().isEmpty(),
-    check('password', 'El password es obligatorio y mas de 6 letras').isLength({min: 6}),
-    check('phone', 'el numero de telefono debe de contener 10 caracteres').isLength({min:10}),
-    check('email').custom(emailExiste),
+    //check('name', 'El nombre es obligatorio').not().isEmpty(),
+    //check('password', 'El password es obligatorio y mas de 6 letras').isLength({min: 6}),
+    //check('phone', 'el numero de telefono debe de contener 10 caracteres').isLength({min:10}),
+    //check('email').custom(emailExiste),
     //check('role').custom(esRolevalido),
     //validatePhone,
-    check('phone').custom(phoneNumberiquals),
+    check('name'),
+    check('email'),
+    check('password'),
+    check('phone'),
     check('directory'),
     validateCampos
 ] ,usuariosPost); //si se tienen mas de 3, significa que el del medio es un middlewares

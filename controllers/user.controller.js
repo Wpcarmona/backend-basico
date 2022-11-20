@@ -53,11 +53,96 @@ const usuariosPut = async(req, res = response) => {
 const usuariosPost = async (req, res = response) => {
 
     const {name, email, password, role, phone, directory} = req.body;
+    
+    if(name == undefined || name == ""){
+        return res.status(200).json({
+            header: [{
+                code: 400,
+                error: 'El nombre es obligatorio'
+            }],
+            body:[{}]
+        });
+    }
+
+    if(email == undefined || email == ""){
+        return res.status(200).json({
+            header: [{
+                code: 400,
+                error: 'El correo es obligatorio'
+            }],
+            body:[{}]
+        });
+    }
+
+    if(password == undefined || password == ""){
+        return res.status(200).json({
+            header: [{
+                code: 400,
+                error: 'La contraseña es obligatoria '
+            }],
+            body:[{}]
+        });
+    }
+
+    if(password.length < 6){
+        return res.status(200).json({
+            header: [{
+                code: 400,
+                error: 'La contraseña debe contener minimo 6 caracteres'
+            }],
+            body:[{}]
+        });
+    }
+
+    if(phone == undefined || phone == ""){
+        return res.status(200).json({
+            header: [{
+                code: 400,
+                error: 'El telefono es obligatorio'
+            }],
+            body:[{}]
+        });
+    }
+
+    if(phone<10){
+        return res.status(200).json({
+            header: [{
+                code: 400,
+                error: 'el numero de telefono debe contener 10 caracteres'
+            }],
+            body:[{}]
+        });
+    }
+
+    const existeEmail = await Usuario.findOne({ email:email.toUpperCase()});
+    const existePhone = await Usuario.findOne({ phone:phone});
+
+    if(existeEmail){
+        return res.status(200).json({
+            header: [{
+                code: 400,
+                error: 'El correo ya se encuentra registrado'
+            }],
+            body:[{}]
+        });
+    }
+    
+    if(existePhone){
+        return res.status(200).json({
+            header: [{
+                code: 400,
+                error: 'El numero de telefono ya se encuentra registrado'
+            }],
+            body:[{}]
+        });
+    }
+
+    
+
     var firstName = name.split(' ')[0];
-    var emailtoUpper = email.toUpperCase();
     const usuario = new Usuario({
         name, 
-        email:emailtoUpper, 
+        email:email.toUpperCase(), 
         password, 
         role, 
         phone, 
