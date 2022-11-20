@@ -17,7 +17,7 @@ const login = async(req, res = response) => {
             return res.status(200).json({
                 header: [{
                     code: 400,
-                    error: 'El correo no se encuentra registrado'
+                    error: 'El correo o contraseña son incorrectos'
                 }],
                 body:[{}]
             });
@@ -28,7 +28,7 @@ const login = async(req, res = response) => {
             return res.status(200).json({
                 header: [{
                     code: 400,
-                    error: 'Cuenta Eliminada'
+                    error: 'Esta cuenta fue eliminada'
                 }],
                 body:[{}]
             });
@@ -41,7 +41,7 @@ const login = async(req, res = response) => {
             return res.status(200).json({
                 header: [{
                     code: 400,
-                    error: 'Password incorrecto'
+                    error: 'El correo o contraseña son incorrectos'
                 }],
                 body:[{}]
             });
@@ -106,7 +106,7 @@ const googleSignin = async(req, res = response) => {
     if(!usuario.status){
         return res.status(200).json({
             header: [{
-                error: 'hable con el administrador, usuario bloqueado',
+                error: 'hable con un administrador, usuario bloqueado',
                 code: 401,
                 token,
             }],
