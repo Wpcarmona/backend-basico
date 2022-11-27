@@ -28,6 +28,7 @@ router.get('/:id', [
     validateCampos
 ], obtenerProduct)
 
+//obtener todas las categorias de un id
 router.get('/products/:term', [
     validateJWT,
     check('term', 'No es un ID valido').isMongoId(),

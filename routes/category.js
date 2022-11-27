@@ -18,22 +18,22 @@ router.get('/',
 router.get('/:id', [
     validateJWT,
     check('id', 'No es un ID valido').isMongoId(),
-    check('id').custom(existeCategoryById),
+    //check('id').custom(existeCategoryById),
     validateCampos
 ], obtenerUnaCateriesByID)
 
 //obtener todas las categorias que el usuario registro por id
 
-router.get('/categories/:term', [
+router.get('/list/:id', [
     validateJWT,
-    check('term', 'No es un ID valido').isMongoId(),
+    check('id', 'No es un ID valido').isMongoId(),
     validateCampos
 ], obtenerTodasCategoriesByID)
 
 // crear categoria, cualquier persona con un token valido
 router.post('/',[
     validateJWT,
-    check('name', 'El nombre es obligatorio').not().isEmpty(),
+    //check('name', 'El nombre es obligatorio').not().isEmpty(),
     validateCampos
 ] , crearCategory)
 
@@ -42,8 +42,8 @@ router.post('/',[
 router.put('/:id', [
     validateJWT, 
     check('id', 'No es un ID valido').isMongoId(),
-    check('name','El nombre debe ser obligatorio').not().isEmpty(),
-    check('id').custom(existeCategoryById),
+    //check('name','El nombre debe ser obligatorio').not().isEmpty(),
+    //check('id').custom(existeCategoryById),
     validateCampos
 ], actualizarCategory)
 
@@ -51,9 +51,9 @@ router.put('/:id', [
 // Borrar categoria, solamente si es admin
 router.delete('/:id', [
     validateJWT,
-    esAdminRole,
+    //esAdminRole,
     check('id', 'No es un ID valido').isMongoId(),
-    check('id').custom(existeCategoryById),
+    //check('id').custom(existeCategoryById),
     validateCampos
 
 ], borrarCategory)

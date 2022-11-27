@@ -33,11 +33,11 @@ const obtenerCategories = async(req, res= response) => {
 const obtenerUnaCateriesByID = async(req, res= response) => {
 
     const {id} = req.params; 
-    const category = await Category.findById( id).populate('user', 'name')
+    const category = await Category.findById(id).populate('user', 'name')
     if(!category){
         res.status(200).json({
             header: [{
-                error:`no se encontro el id ${id}`,
+                error:`no se encontro categoria con ese id`,
                 code: 400,
             }],
             body:[{}]
@@ -57,17 +57,18 @@ const obtenerUnaCateriesByID = async(req, res= response) => {
 
 const obtenerTodasCategoriesByID= async(req, res= response) => {
 
-    const {term} = req.params
-
+    const {id} = req.params
+    const query = {state: true}
     const findCategoriesByID = await Category.find({
-        user: ObjectId(term)
+        user: ObjectId(id)
 
     }).populate('user','name')
+    const countCategories = await Category.countDocuments(query)
 
-    if(findCategoriesByID ==''){
+    if(findCategoriesByID =='' || findCategoriesByID == null || findCategoriesByID == undefined ){
         return res.status(200).json({
             header: [{
-                error:'No tiene categorias registradas',
+                error:'No tienes categorias registradas',
                 code: 200,
             }],
             body:[{}]
@@ -80,6 +81,7 @@ const obtenerTodasCategoriesByID= async(req, res= response) => {
             code: 200,
         }],
         body:[{
+            total: countCategories,
             findCategoriesByID
         }]
     })
@@ -88,9 +90,19 @@ const obtenerTodasCategoriesByID= async(req, res= response) => {
 
 const crearCategory = async(req, res= response) => {
 
-    const name = req.body.name.toUpperCase();
+    const {name} = req.body
 
-    const categoryDB = await Category.findOne({name});
+    if(name == '' || name == null || name == undefined){
+        return res.status(200).json({
+            header: [{
+                error:`Por favor ingrese el nombre de la categoria`,
+                code: 400,
+            }],
+            body:[{}]
+        })
+    }
+
+    const categoryDB = await Category.findOne({name:name.toUpperCase});
 
     if(categoryDB) {
         return res.status(200).json({
@@ -105,7 +117,7 @@ const crearCategory = async(req, res= response) => {
     //Generar la data a guardar
 
     const data = {
-        name,
+        name:name.toUpperCase(),
         user: req.usuario._id
     }
 
@@ -136,6 +148,28 @@ const actualizarCategory = async(req, res = response) => {
     const {id} = req.params;
     const {state, user,...data} = req.body;
 
+    const findId = await Category.findById(id)
+
+    if(!findId){
+        return res.status(200).json({
+            header: [{
+                error:`No existe esa categoria`,
+                code: 400,
+            }],
+            body:[{}]
+        })
+    }
+
+    if(data.name == '' || data.name == null || data.name == undefined){
+        return res.status(200).json({
+            header: [{
+                error:`Por favor ingrese el nombre de la categoria`,
+                code: 400,
+            }],
+            body:[{}]
+        })
+    }
+
     data.name = data.name.toUpperCase();
     data.user = req.user;
 
@@ -156,6 +190,20 @@ const actualizarCategory = async(req, res = response) => {
 const borrarCategory =  async(req, res=response) => {
 
     const {id} = req.params;
+
+    const findId = await Category.findById(id)
+
+    if(!findId){
+        return res.status(200).json({
+            header: [{
+                error:`No existe esa categoria`,
+                code: 400,
+            }],
+            body:[{}]
+        })
+    }
+
+    
     const categoryDelete = await Category.findByIdAndUpdate(id , {state:false}, {new:true});
 
     res.status(200).json({
